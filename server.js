@@ -16,8 +16,8 @@ const client = new MongoClient(uri, {
 });
 
 const server = https.createServer({
-  key: fs.readFileSync('/etc/letsencrypt/live/privatechatapp.duckdns.org/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/privatechatapp.duckdns.org/fullchain.pem'),
+  key: fs.readFileSync('/etc/ssl/cloudflare-key.pem'),
+  cert: fs.readFileSync('/etc/ssl/cloudflare-cert.pem'),
 });
 
 // Create WebSocket Server
