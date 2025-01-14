@@ -1,6 +1,4 @@
 // Import webSocket module
-const fs = require('fs');
-const https = require('https');
 const WebSocket = require('ws');
 const bcrypt = require("bcrypt")
 // Import mongodb module
@@ -13,17 +11,8 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
-const server = https.createServer({
-  cert: fs.readFileSync('/etc/letsencrypt/live/privatechatapp.duckdns.org/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/privatechatapp.duckdns.org/privkey.pem'),
-});
-
-const wss = new WebSocket.Server({ server });
-
-server.listen(8080, () => {
-  console.log('Server WebSocket is listening on wss://privatechatapp.duckdns.org:8080');
-});
+// Create WebSocket Server
+const wss = new WebSocket.Server({ port: 8080 });
 
 const users = new Map();
 
@@ -188,6 +177,7 @@ async function run(){
 };
 run();
 // Server location log
+console.log('Server WebSocket is listening on https://vigilant-space-winner-x649p4xxpr4cqvg-8080.app.github.dev/');
 
 function isGood(str) {
   return typeof str === 'string' && str.length >= 3 && str.length <= 15 && !/^\s*$/.test(str) && !/^\d/.test(str) && /^[a-zA-Z0-9 ]+$/.test(str);
