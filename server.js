@@ -3,10 +3,14 @@ const WebSocket = require('ws');
 const bcrypt = require("bcrypt")
 const https = require('https');
 const fs = require('fs');
-
-// Import mongodb module
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Admin:M2OVJgzIzekpEjEX@chatapp.h0po0.mongodb.net/?retryWrites=true&w=majority&appName=ChatApp";
+
+const server = https.createServer({
+  cert: fs.readFileSync('/etc/ssl/cloudflare-cert.pem'),
+  key: fs.readFileSync('/etc/ssl/cloudflare-key.pem')
+});
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -14,12 +18,6 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
-const server = https.createServer({
-  key: fs.readFileSync('/etc/ssl/cloudflare-key.pem'),
-  cert: fs.readFileSync('/etc/ssl/cloudflare-cert.pem'),
-});
-
 // Create WebSocket Server
 const wss = new WebSocket.Server({ server });
 
@@ -186,10 +184,7 @@ async function run(){
 };
 run();
 // Server location log
-const PORT = 8080;
-server.listen(PORT, () => {
-  console.log(`Server WebSocket is listening on https://your-domain.com:${PORT}`);
-});
+server.listen(8080);
 
 function isGood(str) {
   return typeof str === 'string' && str.length >= 3 && str.length <= 15 && !/^\s*$/.test(str) && !/^\d/.test(str) && /^[a-zA-Z0-9 ]+$/.test(str);
